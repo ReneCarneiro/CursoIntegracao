@@ -3,7 +3,6 @@ package com.impacta.cursointegracao.service;
 import com.impacta.cursointegracao.Dto.ProdutoDto;
 import com.impacta.cursointegracao.Dto.ProdutoListDto;
 import com.impacta.cursointegracao.domain.Produto;
-import com.impacta.cursointegracao.projection.ProdutoProjection;
 import com.impacta.cursointegracao.repository.DescricaoRepository;
 import com.impacta.cursointegracao.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class ProdutoSvc {
@@ -28,12 +26,18 @@ public class ProdutoSvc {
         return new ProdutoDto(result);
     }
 
+    public Produto update(Long id, Produto obj) {
+        Produto entity = produtoRepository.getReferenceById(id);
+        updateData(entity, obj);
+        return produtoRepository.save(entity);
+    }
 
-//    public Produto findById(String descricao) {
-//        Optional<Produto> obj = descricaoRepository.findById(descricao);
-//        return obj.get();
-//    }
-
+    private void updateData(Produto entity, Produto obj) {
+        entity.setCodigo(obj.getCodigo());
+        entity.setDescricao(obj.getDescricao());
+        entity.setSKU(obj.getSKU());
+        entity.setCategoria(obj.getCategoria());
+    }
 
     @Transactional(readOnly = true)
     public List<ProdutoListDto> findAll() {

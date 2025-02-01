@@ -8,11 +8,13 @@ import com.impacta.cursointegracao.repository.ProdutoRepository;
 import com.impacta.cursointegracao.service.ProdutoSvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Component
 @RequestMapping("/api/v1/produto")
 public class ProdutoCtrl {
 
@@ -28,6 +30,12 @@ public class ProdutoCtrl {
     public ProdutoDto findById(@PathVariable Long id) {
         ProdutoDto result = produtoService.findById(id);
         return result;
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody Produto obj) {
+        obj = produtoService.update(id, obj);
+        return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping
