@@ -27,8 +27,8 @@ public class ProdutoCtrl {
     public ProdutoSvc produtoService;
 
     @GetMapping(value = "/{id}")
-    public ProdutoDto findById(@PathVariable Long id) {
-        ProdutoDto result = produtoService.findById(id);
+    public Produto findById(@PathVariable Long id) {
+        Produto result = produtoService.findById(id);
         return result;
     }
 

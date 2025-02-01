@@ -5,12 +5,15 @@ import com.impacta.cursointegracao.Dto.ProdutoListDto;
 import com.impacta.cursointegracao.domain.Produto;
 import com.impacta.cursointegracao.repository.DescricaoRepository;
 import com.impacta.cursointegracao.repository.ProdutoRepository;
+import com.impacta.cursointegracao.service.exception.ResourceNotFoundException;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProdutoSvc {
@@ -20,10 +23,10 @@ public class ProdutoSvc {
     @Autowired
     private DescricaoRepository descricaoRepository;
 
-    @Transactional(readOnly = true)
-    public ProdutoDto findById(Long id) {
-        Produto result = produtoRepository.findById(id).get();
-        return new ProdutoDto(result);
+
+    public Produto findById(Long id) {
+        Optional<Produto> obj = produtoRepository.findById(id);
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Produto update(Long id, Produto obj) {
